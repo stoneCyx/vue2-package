@@ -110,7 +110,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.wf-table__body{
+table{
+  border-collapse: collapse;
+}
+tbody{
     color: #333333;
     border-collapse: collapse;
     width:600px;
@@ -122,10 +125,5 @@ export default {
       margin-left:-1px;
       background-color: #ffffff;
   }
-}
-.hidden-columns {
-  visibility: hidden;
-  position: absolute;
-  z-index: -1;
 }
 </style>

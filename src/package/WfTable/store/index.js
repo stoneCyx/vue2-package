@@ -3,44 +3,19 @@ import Watcher from './watcher';
 
 Watcher.prototype.mutations = {
   setData(states, data) {
-    const dataInstanceChanged = states._data !== data;
-    states._data = data;
     states.data = data;
-    // this.execQurey();
-    // this.updateCurrentRowData();
-    // this.updateExpandRows();
-    // if (states.reserveSelection) {
-    //   this.assertRowKey();
-    //   this.updateSelectionByRowKey();
-    // } else if(dataInstanceChanged) {
-    //   this.clearSelection();
-    // } else {
-    //   this.cleanSelection();
-    // }
-    // this.updateAllSelected();
-    // this.updateTableScrollY();
   },
   insertColumn(states, column, index, parent){
+    
+    // 此处array就是states._columns，数组赋值是引用传递
     let array = states._columns;
-    if (parent){
-      array = parent.children;
-      if(!array) array = parent.children = [];
-    }
 
     if (typeof index !== 'undefined') {
       array.splice(index, 0, column);
     } else {
       array.push(column);
     }
-
-    if (column.type === 'selection') {
-      states.selectable = column.selectable;
-      states.reserveSelection = column.reserveSelection
-    }
-    // if (this.table.$ready) {
-      this.updateColumns();
-      this.scheduleLayout();
-    // }
+    this.updateColumns();
   },
   removeColumn(states, column, parent){
     let array = states._columns;
