@@ -1,7 +1,12 @@
 <template>
   <div >
       <table v-if="paramsData.length" class="itxst">
-        <tbody is="draggable" v-model="paramsData" animation="500" filter=".forbid" force-fallback="true">
+        <colgroup >
+          <col class="col1" />
+          <col class="col2"  />
+          <col class="col2"  />
+        </colgroup>
+        <tbody is="draggable" v-model="paramsData" animation="500" filter=".forbid" force-fallback="true"> 
           <tr v-for="(item,index) in paramsData" :key="index" class="fild-row move">
             <td :class="{ ellipse }">{{ item.value }}</td>
             <td>2</td>
