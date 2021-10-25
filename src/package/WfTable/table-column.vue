@@ -10,8 +10,7 @@ export default {
   },
   data(){
     return {
-      isSubColumn: false,
-      columns: []
+
     };
   },
   computed: {
@@ -22,30 +21,16 @@ export default {
       }
       return parent;
     },
-
     columnOrTableParent() {
       let parent = this.$parent;
       while(parent && !parent.tableId && !parent.columnId){
         parent = parent.$parent;
       }
       return parent;
-    },
-
-    realWidth() {
-      // return parseWidth(this.width)
     }
   },
 
   methods: {
-    createRow(){ 
-      const data = this.$parent.data;
-      const { prop, index } = this;
-      let arr = [];
-      data.forEach(item=>{
-
-      })
-      return data[index][prop];
-    },
     getPropsData(...props) {
       return props.reduce((prev, cur) => {
         if(Array.isArray(cur)){
@@ -80,8 +65,6 @@ export default {
     let column = this.getPropsData(basicProps, sortProps, selectProps, filterProps);    
 
     column = mergeOptions(defaults, column);
-    // const chains = compose(this.setColumnRenders);
-    // column = chains(column);
 
     this.columnConfig = column;
   },
@@ -90,7 +73,7 @@ export default {
     const parent = this.$parent;
     const children = this.isSubColumn ? parent.$el.children : parent.$refs.hiddenColumns.children;
     const columnIndex = this.getColumnElIndex(children, this.$el);
-
+    //所有处理数据的操作只为了这一步，添加列信息
     owner.store.commit('insertColumn',this.columnConfig, columnIndex);
   }
 }

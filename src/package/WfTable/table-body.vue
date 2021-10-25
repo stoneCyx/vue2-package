@@ -3,15 +3,12 @@ import { mapStates } from './store/helper.js'
 export default {
     name:'WfTableBody',
     props: {
+      // mapStates中,helpre使用了 this.store，如果不引入store则this.store报错
       store:{
         require:true,
-      },
-      context: {}
+      }
     },    
     computed: {
-      table() {
-        return this.$parent;
-      },
       ...mapStates({
         data:'data',
         columns: 'columns',
@@ -38,42 +35,12 @@ export default {
      
     },
     methods: {
-      getRowClass(row, rowIndex) {
-        const classes = [`el-table__row__${rowIndex}`];
-      },
-      isColumnHidden (index) {
-        return false;
-      },
-      getSpan(row, column, rowIndex, columnIndex) {
-        let rowspan = 1;
-        let colspan = 1;
-        const fn = this.table.spanMethod;
-        if (typeof fn === 'function') {
-          const result = fn({ row, column, rowIndex, columnIndex });
-          if (Array.isArray(result)) {
-            rowspan = result[0];
-            colspan = result[1];
-          } else if (typeof result === 'object') {
-            rowspan = result.rowspan;
-            colspan = result.colspan;
-          }
-        }
-        return { rowspan,colspan };
-      },
       rowRender(row, $index) {
         const { columns } = this;
-        const columsHidden = columns.map((column, index) => this.isColumnHidden(index));
-        const rowClass = this.getRowClass(row, $index);
-        let display = true;
-        let displayStyle = display ? null : { display:'none' };
         return (
           <tr>
             {
-              columns.map((column, cellIndex) => {
-                const { rowspan, colspan } = this.getSpan(row, column, $index, cellIndex);
-                if (!rowspan || !colspan) {
-                  return null;
-                }
+              columns.map((column) => {
                 return (
                   <td>
                     { row[column.property] }
@@ -83,47 +50,29 @@ export default {
             }
           </tr>
         )
-
       },
       wrappedRowRender(row, $index) {
-        const store = this.store;
-        const { isRowExpanded, assertRowKey } = store;
-        const { treeData, lazyTreeNodeMap, childrenColumnName, rowKey } = store.states;
-        // if (this.hasExpandColumn && isRowExpanded(row)) {
-          const renderExpanded = this.table.renderExpanded;
-          const tr = this.rowRender(row, $index);
-          // if (!renderExpanded) {
-            // console.error('renderExpanded is required.');
-            return tr;
-          // }
-          return [[
-            tr,
-            <tr key={'expanded-row__' + tr.key}>
-              <td colspan={ this.columnsCount } class="wf-table__cell wf-table__expanded-cell" >
-                { renderExpanded(this.$createElement,{ row, $index, store: this.store }) }
-              </td>
-            </tr>
-          ]]
-        // }
+        const tr = this.rowRender(row, $index);
+        return tr;
       }
     }
 }
 </script>
 <style lang="scss" scoped>
-table{
+table {
   border-collapse: collapse;
 }
-tbody{
-    color: #333333;
-    border-collapse: collapse;
-    width:600px;
+tbody {
+  color: #333333;
+  border-collapse: collapse;
+  width: 600px;
   td {
-      border: #ddd solid 1px;
-      width:200px;
-      padding: 12px;
-      margin-top:-1px;
-      margin-left:-1px;
-      background-color: #ffffff;
+    border: #ddd solid 1px;
+    width: 200px;
+    padding: 12px;
+    margin-top: -1px;
+    margin-left: -1px;
+    background-color: #ffffff;
   }
 }
 </style>
