@@ -11,6 +11,8 @@
     </div>
     <div class="item">自定义表格:
       <WfTable :data="tableData" >
+        <Column type="index" />
+        <Column type="selection" />
         <Column prop="date" label="日期" />
         <Column prop="name" label="姓名" />
         <Column prop="address" label="地址" />

@@ -6,13 +6,20 @@ export default {
       // mapStates中,helpre使用了 this.store，如果不引入store则this.store报错
       store:{
         require:true,
-      }
+      },
+      context: {}
     },    
     computed: {
       ...mapStates({
         data:'data',
         columns: 'columns',
-      })
+      }),
+      firstDefaultColumnIndex() {
+        return this.columns.findIndex(({ type })=> type === 'default'); 
+      },
+      table() {
+        return this.$parent;
+      }
     },
     render(h) {
       const data = this.data || [];
@@ -36,14 +43,27 @@ export default {
     },
     methods: {
       rowRender(row, $index) {
-        const { columns } = this;
+        const { columns, firstDefaultColumnIndex } = this;
+
         return (
           <tr>
             {
-              columns.map((column) => {
+              columns.map((column) => {       
+                const data = {
+                  store: this.store,
+                  _self: this.context || this.table.$vnode.context,
+                  column: {...column},
+                  row,
+                  $index
+                };
                 return (
                   <td>
-                    { row[column.property] }
+                    { column.renderCell.call(
+                      this._renderProxy,
+                      this.$createElement,
+                      data,
+                      null
+                    ) }
                   </td>
                 )
               })
