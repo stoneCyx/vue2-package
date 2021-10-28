@@ -10,12 +10,12 @@
       <DragTable />
     </div>
     <div class="item">自定义表格:
-      <WfTable :data="tableData" >
+      <WfTable :data="tableData">
         <Column type="index" />
         <Column type="selection" />
-        <Column prop="date" label="日期" />
+        <Column prop="date" width="120" label="日期" />
         <Column prop="name" label="姓名" />
-        <Column prop="address" label="地址" />
+        <Column prop="address" width="240" label="地址" />
       </WfTable>
     </div>
   </div>

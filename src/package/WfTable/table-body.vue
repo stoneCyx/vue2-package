@@ -1,7 +1,9 @@
 <script lang="jsx">
-import { mapStates } from './store/helper.js'
+import { mapStates } from './store/helper.js';
+import LayoutObserver from './layout-observer.js';
 export default {
     name:'WfTableBody',
+    mixins: [LayoutObserver], // 使用观察者模式来
     props: {
       // mapStates中,helpre使用了 this.store，如果不引入store则this.store报错
       store:{
@@ -23,8 +25,14 @@ export default {
     },
     render(h) {
       const data = this.data || [];
+      // 设置col的宽度来控制每一列的宽度
       return (
         <table>
+          <colgroup>
+            {
+              this.columns.map(column => <col name={ column.id } key={column.id} />)
+            }
+          </colgroup>
           <tbody>
             {
               data.reduce((acc, row) => {
@@ -42,22 +50,51 @@ export default {
      
     },
     methods: {
-      rowRender(row, $index) {
-        const { columns, firstDefaultColumnIndex } = this;
+      getCellClass(rowIndex, columnIndex, row, column) {
+        const classes = [column.id, column.align, column.className];
 
+        const cellClassName = this.table.cellClassName;
+        if (typeof cellClassName === 'string') {
+          classes.push(cellClassName);
+        } else if (typeof cellClassName === 'function') {
+          classes.push(cellClassName.call(null,{
+            rowIndex, columnIndex, row, column
+          }));
+        }
+        classes.push('vpack-table__cell');
+        return classes.join(' ');
+      },
+      getCellStyle(rowIndex, columnIndex, row, column) {
+        const cellStyle = this.table.cellStyle;
+        if(typeof cellStyle === 'function') {
+          return cellStyle.call(null,{
+            rowIndex,
+            columnIndex,
+            row,
+            column
+          })
+        }
+        return cellStyle;
+      },
+      rowRender(row, $index) {
+        const { columns } = this;
         return (
           <tr>
             {
-              columns.map((column) => {       
+              columns.map((column, cellIndex) => {
+                const columnData = { ...column }
                 const data = {
                   store: this.store,
                   _self: this.context || this.table.$vnode.context,
-                  column: {...column},
+                  column: columnData,
                   row,
                   $index
                 };
                 return (
-                  <td>
+                  <td
+                    style={ this.getCellStyle($index, cellIndex, row, column) }
+                    class={ this.getCellClass($index, cellIndex, row, column) }
+                  >
                     { column.renderCell.call(
                       this._renderProxy,
                       this.$createElement,
@@ -85,10 +122,8 @@ table {
 tbody {
   color: #333333;
   border-collapse: collapse;
-  width: 600px;
   td {
     border: #ddd solid 1px;
-    width: 200px;
     padding: 12px;
     margin-top: -1px;
     margin-left: -1px;

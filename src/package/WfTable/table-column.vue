@@ -5,8 +5,7 @@ import { mergeOptions, compose, parseWidth, parseMinWidth } from './util'
 let columnIdSeed = 1;
 export default {
   name: 'ElTableColumn',
-
-  props:{
+  props: {
     prop: String,
     label: String,  
     type: {
@@ -19,7 +18,7 @@ export default {
     selectable: Function,
     reserveSelection: Boolean
   },
-  data(){
+  data() {
     return {
 
     };
