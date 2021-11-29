@@ -1,9 +1,8 @@
-
 function hasOwn(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
 export function mergeOptions(defaults, config) {
-  const options = {...defaults};
+  const options = { ...defaults };
   let key;
   for (key in config) {
     if (hasOwn(config, key)) {
@@ -18,12 +17,14 @@ export function mergeOptions(defaults, config) {
 
 export function compose(...funcs) {
   if (funcs.length === 0) {
-    return arg => arg;
+    return (arg) => arg;
   }
   if (funcs.length === 1) {
     return funcs[0];
   }
-  return funcs.reduce((a, b) => (...args) => a(b(...args)));
+  return funcs.reduce(
+    (a, b) => (...args) => a(b(...args))
+  );
 }
 
 export function parseWidth(width) {
@@ -36,7 +37,7 @@ export function parseWidth(width) {
   return width;
 }
 
-export function parseMinWidth(minWidth){
+export function parseMinWidth(minWidth) {
   if (typeof minWidth !== 'undefined') {
     minWidth = parseWidth(minWidth);
     if (isNaN(minWidth)) {

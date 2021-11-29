@@ -1,16 +1,16 @@
 <template>
-  <div class="vpack-table">
-    <div class="hidden-columns" ref="hiddenColumns">
-      <slot></slot>
+    <div class="vpack-table">
+        <div class="hidden-columns" ref="hiddenColumns">
+            <slot></slot>
+        </div>
+        <table-body fixed="right" :store="store" />
     </div>
-    <table-body fixed="right" :store="store" />
-  </div>
 </template>
 
 <script>
-import { createStore, mapStates } from "./store/helper.js";
-import TableBody from "./table-body.vue";
-import TableLayout from "./table-layout";
+import { createStore, mapStates } from './store/helper.js'
+import TableBody from './table-body.vue'
+import TableLayout from './table-layout'
 
 let tableIdSeed = 1;
 
@@ -32,17 +32,17 @@ export default {
     const layout = new TableLayout({
       store: this.store,
       table: this,
-      fit: this.fit
+      fit: this.fit,
     })
     return {
-      layout
+      layout,
     };
   },
   computed: {
     // tablelayout 里面的 getFlattenColumns 方法需要用到，要用列的数据进行处理
     ...mapStates({
       columns: 'columns',
-    })
+    }),
   },
   watch: {
     data: {
@@ -53,14 +53,14 @@ export default {
     },
   },
   created() {
-    this.tableId = 'vpack-table_' + tableIdSeed++;
-  }
+    this.tableId = `vpack-table_${tableIdSeed++}`
+  },
 };
 </script>
 <style lang="scss" scoped>
 .hidden-columns {
-  visibility: hidden;
-  position: absolute;
-  z-index: -1;
+    visibility: hidden;
+    position: absolute;
+    z-index: -1;
 }
 </style>
