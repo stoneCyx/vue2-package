@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="item">
+    <wxLogin />
+    <el-input v-model="tag" @change="onChange" />
+    <div class="item" v-Loading="true">
       可编辑输入框：
       <EditInput v-model="tag" placeholder="请输入内容" />
     </div>
@@ -22,15 +24,20 @@
   </div>
 </template>
 <script>
+import wxLogin from './package/WxLogin/index.vue';
 import EditInput from './package/EditInput/index.vue';
 import DragTable from './package/DragTable/index.vue';
 import WfTable from './package/WfTable/index.vue';
 import Column from './package/WfTable/table-column.vue';
+import Loading from './directive/loading';
 
 export default {
   data() {
     return {
       tag: '',
+      obj() {
+        return { a: 1, sss: { ss: 2 } };
+      },
       tableData: [
         {
           date: '2016-05-02',
@@ -60,7 +67,27 @@ export default {
       ],
     };
   },
+  directives: { Loading },
+  computed: {
+    ff() {
+      return this.obj;
+    },
+  },
+  created() {
+    this.objx();
+  },
   methods: {
+    // eslint-disable-next-line vue/no-dupe-keys
+    objx() {
+      setTimeout(function () {
+        console.log(this);
+        debugger;
+      }, 1000);
+    },
+    onChange() {
+      // const num = this.obj.b || {};
+      // this.obj.b = { ss: 1 };
+    },
     xx() {
       const s = 90;
       console.log(s);
@@ -72,6 +99,7 @@ export default {
     DragTable,
     WfTable,
     Column,
+    wxLogin,
   },
 };
 </script>

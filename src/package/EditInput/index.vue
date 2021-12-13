@@ -1,26 +1,26 @@
 <template>
-    <div class="fild-item">
-        <span v-show="required" class="required">*</span>
-        <el-input
-            :style="{ width }"
-            v-if="inputVisible"
-            ref="saveTagInput"
-            v-model="value"
-            size="small"
-            class="input-new-tag"
-            clearable
-            :placeholder="placeholder"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
-        />
-        <el-button
-            v-else
-            :class="['button-new-tag', { 'no-border': !this.border }]"
-            size="small"
-            @click="showInput"
-            >{{ value }} <i class="el-icon-edit"
-        /></el-button>
-    </div>
+  <div class="fild-item">
+    <span v-show="required" class="required">*</span>
+    <el-input
+      :style="{ width }"
+      v-if="inputVisible"
+      ref="saveTagInput"
+      v-model="value"
+      size="small"
+      class="input-new-tag"
+      clearable
+      :placeholder="placeholder"
+      @keyup.enter.native="handleInputConfirm"
+      @blur="handleInputConfirm"
+    />
+    <el-button
+      v-else
+      :class="['button-new-tag', { 'no-border': !this.border }]"
+      size="small"
+      @click="showInput"
+      >{{ value }} <i class="el-icon-edit"
+    /></el-button>
+  </div>
 </template>
 <script>
 export default {
@@ -55,7 +55,7 @@ export default {
     return {
       inputVisible: false,
       value: this.inputValue,
-    }
+    };
   },
   watch: {
     inputValue(val) {
@@ -72,7 +72,7 @@ export default {
   methods: {
     showInput() {
       this.inputVisible = true;
-      this.$nextTick(_ => {
+      this.$nextTick((_) => {
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
@@ -92,37 +92,37 @@ export default {
       }
     },
   },
-}
+};
 </script>
 <style scoped lang="scss">
 .required {
-    color: red;
-    position: absolute;
+  color: red;
+  position: absolute;
 }
 .fild-item {
-    display: inline-block;
-    .button-new-tag {
-        height: 32px;
-        line-height: 30px;
-        padding-top: 0;
-        padding-bottom: 0;
-        position: relative;
-        i {
-            position: absolute;
-            display: none;
-            font-size: 16px;
-            top: -5px;
-            right: -6px;
-        }
-        &:hover i {
-            display: block;
-        }
+  display: inline-block;
+  .button-new-tag {
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: relative;
+    i {
+      position: absolute;
+      display: none;
+      font-size: 16px;
+      top: -5px;
+      right: -6px;
     }
-    .no-border {
-        border: none;
+    &:hover i {
+      display: block;
     }
-    .input-new-tag {
-        width: 100%;
-    }
+  }
+  .no-border {
+    border: none;
+  }
+  .input-new-tag {
+    width: 100%;
+  }
 }
 </style>

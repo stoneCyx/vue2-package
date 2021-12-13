@@ -23,6 +23,7 @@ module.exports = {
         "import/no-unresolved": 0,
         "no-console": 1,
         "no-debugger": 1,
-        "prettier/prettier": ["error", { "singleQuote": true }]
+        "prettier/prettier": ["error", { "singleQuote": true }],
+        "no-param-reassign":1,
     }
 };
